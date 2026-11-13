@@ -146,6 +146,10 @@ app.post("/api/login", (req, res) => {
 
   req.session.usuarioId = u.id;
 
+  console.log("[login] ID da sessão:", req.sessionID);
+  console.log("[login] Sessão criada:", req.session.usuarioId);
+  console.log("[login] Secure:", req.session.cookie.secure);
+
   const { senha: _, ...safe } = u;
   safe.permissoes = permissoesDe(u.id);
 
@@ -157,6 +161,7 @@ app.post("/api/login", (req, res) => {
       });
     }
 
+    console.log("[login] Sessão salva com sucesso.");
     res.json({ usuario: safe });
   });
 });
