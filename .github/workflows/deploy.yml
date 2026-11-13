@@ -1,0 +1,36 @@
+
+name: Projetai CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    name: Validar aplicação
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Verificar sintaxe do código
+        run: |
+          node --check server.js
+          node --check database.js
+          node --check public/js/api.js
+          node --check public/js/app.js
+          node --check public/js/charts.js
