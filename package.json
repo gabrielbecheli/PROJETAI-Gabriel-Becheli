@@ -1,0 +1,17 @@
+{
+  "name": "projetai",
+  "version": "1.6.1",
+  "description": "Sistema de gestao de projetos com classificacao Cynefin - HTML/CSS/JS + Node.js/Express + SQLite",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "bcryptjs": "^2.4.3",
+    "express-session": "^1.18.0"
+  },
+  "engines": {
+    "node": ">=23.4.0"
+  }
+}

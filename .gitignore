@@ -1,0 +1,26 @@
+
+# Dependências
+node_modules/
+
+# Arquivos gerados
+dist/
+build/
+coverage/
+
+# Variáveis de ambiente
+.env
+.env.*
+!.env.example
+
+# Banco de dados SQLite
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
