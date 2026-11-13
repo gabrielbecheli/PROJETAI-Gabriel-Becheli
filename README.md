@@ -1,4 +1,4 @@
-# Projetaí — Gestão de Projetos com Classificação Cynefin
+# Projetaí — Gestão de Projetos com Classificação Cynefin.
 
 Sistema web desenvolvido com **HTML, CSS e JavaScript** no front-end, **Node.js + Express.js** no back-end
 e persistência em banco relacional **SQLite**.
