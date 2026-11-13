@@ -27,12 +27,12 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
 
-  cookie: {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: isProduction,
-    maxAge: 1000 * 60 * 60 * 8
-  },
+cookie: {
+  httpOnly: true,
+  sameSite: "lax",
+  secure: false,
+  maxAge: 1000 * 60 * 60 * 8
+},
 }));
 
 // Middleware: exige sessao autenticada
