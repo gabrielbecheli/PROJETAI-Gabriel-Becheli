@@ -19,9 +19,13 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 // ══ Item 3: Sessao real no servidor (express-session) ════════════════════════
+
 app.use(session({
   secret: process.env.SESSION_SECRET ||
     "segredo-apenas-para-desenvolvimento",
+
+  resave: false,
+  saveUninitialized: false,
 
   cookie: {
     httpOnly: true,
