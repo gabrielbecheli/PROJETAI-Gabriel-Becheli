@@ -109,28 +109,56 @@ const nivelMatrix = {
 };
 const calcNivel = (p, i) => (nivelMatrix[p] && nivelMatrix[p][i]) || "Baixo";
 
+
+
 // ── Login ────────────────────────────────────────────────────────────────────
 app.post("/api/login", (req, res) => {
   const erros = validar(req.body, {
     email: { obrigatorio: true, email: true, rotulo: "E-mail" },
     senha: { obrigatorio: true, rotulo: "Senha" },
   });
-  if (erros.length) return res.status(400).json({ erro: erros.join(" ") });
+
+  if (erros.length) {
+    return res.status(400).json({ erro: erros.join(" ") });
+  }
 
   const { email, senha } = req.body;
-  const u = db.prepare("SELECT * FROM usuarios WHERE lower(email) = lower(?)").get(email.trim());
-  if (!u) return res.status(401).json({ erro: "E-mail nao encontrado. Verifique os dados informados." });
 
-  // Item 2: comparacao segura com hash bcrypt
+  const u = db.prepare(
+    "SELECT * FROM usuarios WHERE lower(email) = lower(?)"
+  ).get(email.trim());
+
+  if (!u) {
+    return res.status(401).json({
+      erro: "E-mail nao encontrado. Verifique os dados informados."
+    });
+  }
+
   const senhaOk = u.senha && u.senha.startsWith("$2")
     ? bcrypt.compareSync(senha, u.senha)
-    : u.senha === senha; // compatibilidade com bancos antigos (apague projetai.db para migrar)
-  if (!senhaOk) return res.status(401).json({ erro: "Senha incorreta. Tente novamente." });
+    : u.senha === senha;
 
-  req.session.usuarioId = u.id; // item 3: sessao gravada no servidor
+  if (!senhaOk) {
+    return res.status(401).json({
+      erro: "Senha incorreta. Tente novamente."
+    });
+  }
+
+  req.session.usuarioId = u.id;
+
   const { senha: _, ...safe } = u;
   safe.permissoes = permissoesDe(u.id);
-  res.json({ usuario: safe });
+
+  req.session.save((err) => {
+    if (err) {
+      console.error("[login] Erro ao salvar sessão:", err);
+      return res.status(500).json({
+        erro: "Não foi possível iniciar a sessão."
+      });
+    }
+
+    res.json({ usuario: safe });
+  });
 });
 
 // Sessao atual — mantem o login apos recarregar a pagina (F5)
